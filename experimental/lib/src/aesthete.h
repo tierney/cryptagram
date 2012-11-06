@@ -10,12 +10,12 @@
 #ifndef _AESTHETE_H_
 #define _AESTHETE_H_
 
-#include <bitset>
 #include <cassert>
 #include <iostream>
 #include <vector>
 #include <sstream>
 
+#include "boost/dynamic_bitset.hpp"
 #include "boost/numeric/ublas/matrix.hpp"
 #include "glog/logging.h"
 
@@ -24,7 +24,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::ostringstream;
-using std::bitset;
+using boost::dynamic_bitset;
 using std::vector;
 
 namespace cryptogram {
