@@ -52,7 +52,6 @@ void* AestheteRunner::Run(void* context) {
   Experiment experiment(discretizations, f_str_stream.str());
   experiment.Init();
   MatrixQueueEntry* queue_entry = NULL;
-  bitset<48> tmp;
   while(true) {
     // To avoid busy waiting on the queue, we use the timeout on the get() call
     // to the queue.
@@ -65,9 +64,7 @@ void* AestheteRunner::Run(void* context) {
     }
     queue_entry = static_cast<MatrixQueueEntry*>(queue_resp);
     for (int i = 0; i < queue_entry->size(); i++) {
-      tmp.reset();
-      tmp = bitset<48>((*queue_entry)[i]);
-      MatrixRepresentation mr(tmp);
+      MatrixRepresentation mr((*queue_entry)[i]);
       vector<int> matrix_entries;
       mr.ToInts(&matrix_entries);
       experiment.Run(matrix_entries);
@@ -132,7 +129,7 @@ void* AestheteReader::Run(void* context) {
       break;
     }
 
-    bitset<48> bits;
+    dynamic_bitset<> bits;
     cryptogram::MatrixRepresentation::BitsetFromBytes(matrix, &bits);
     if (matrix_count >= FLAGS_chunk_size) {
       self->queue()->put(matrices, true, 0);
@@ -193,7 +190,7 @@ void* Generator::Run(void* context) {
       }
 
       // Store the matrix in the vector<>;
-      bitset<48> matrix_bitset;
+      dynamic_bitset<> matrix_bitset(48);
       MatrixRepresentation::BitsetFromBytes(matrix, &matrix_bitset);
       matrices->push_back(matrix_bitset);
     }

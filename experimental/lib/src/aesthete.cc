@@ -11,6 +11,14 @@
 
 namespace cryptogram {
 
+vector<unsigned char> bitset_to_bytes(const dynamic_bitset<>& bs) {
+  const size_t N = bs.size();
+  vector<unsigned char> result((N + 7) >> 3);
+  for (int j = 0; j < N; j++)
+    result[j>>3] |= (bs[j] << (j & 7));
+  return result;
+}
+
 void AverageAestheteBlocks(const matrix<unsigned char>& input,
                            matrix<double>* output) {
   CHECK_NOTNULL(output);
@@ -26,7 +34,7 @@ void AverageAestheteBlocks(const matrix<unsigned char>& input,
 MatrixRepresentation::MatrixRepresentation() {
 }
 
-MatrixRepresentation::MatrixRepresentation(bitset<48> bits) {
+MatrixRepresentation::MatrixRepresentation(dynamic_bitset<> bits) {
   matrix_.bits = bits;
 }
 
@@ -58,7 +66,7 @@ void MatrixRepresentation::InitFromInts(const vector<int>& values) {
 int MatrixRepresentation::operator()(int x, int y) {
   const int kWidth = 4 * 3;
 
-  bitset<3> value;
+  dynamic_bitset<> value;
   int start_idx = y * kWidth + x * 3;
   value[0] = matrix_.bits[start_idx + 0];
   value[1] = matrix_.bits[start_idx + 1];
@@ -83,7 +91,7 @@ string MatrixRepresentation::ToString() {
   return ret;
 }
 
-void MatrixRepresentation::BitsetFromBytes(const char* input, bitset<48>* bits) {
+void MatrixRepresentation::BitsetFromBytes(const char* input, dynamic_bitset<>* bits) {
   // TODO(tierney): Should enforce the lengith of input is six bytes.
   for (int j = 0; j < 48; j++) {
     (*bits)[j] = ((input[j>>3] >> (j & 7)) & 1);

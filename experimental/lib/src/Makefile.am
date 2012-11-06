@@ -35,7 +35,8 @@ in_memory_experiment_LDADD = \
 	libexperiment.a \
 	libjpeg_codec.a \
 	libarray.a  \
-	-lpthread -lgflags -lglog
+	-lpthread -lgflags -lglog -lboost_system
+
 if USE_LIBTCMALLOC
   in_memory_experiment_CPPFLAGS =  \
     -fno-builtin-malloc \

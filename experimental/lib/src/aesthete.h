@@ -32,14 +32,16 @@ namespace cryptogram {
 void AverageAestheteBlocks(const matrix<unsigned char>& input,
                            matrix<double>* output);
 
-template<size_t N>
-vector<unsigned char> bitset_to_bytes(const std::bitset<N>& bs)
-{
-  vector<unsigned char> result((N + 7) >> 3);
-  for (int j=0; j<int(N); j++)
-    result[j>>3] |= (bs[j] << (j & 7));
-  return result;
-}
+// template<size_t N>
+// vector<unsigned char> bitset_to_bytes(const std::bitset<N>& bs)
+// {
+//   vector<unsigned char> result((N + 7) >> 3);
+//   for (int j=0; j<int(N); j++)
+//     result[j>>3] |= (bs[j] << (j & 7));
+//   return result;
+// }
+
+vector<unsigned char> bitset_to_bytes(const dynamic_bitset<>& bs);
 
 // NOTE: This code does not actually compile because the value of N for
 // std::bitset<N> cannot be determined until runtime (and templates must know
@@ -56,7 +58,7 @@ vector<unsigned char> bitset_to_bytes(const std::bitset<N>& bs)
 // }
 
 struct CompactMatrix {
-  bitset<48> bits;
+  dynamic_bitset<> bits;
 };
 
 struct CharMatrix {
@@ -66,7 +68,7 @@ struct CharMatrix {
 class MatrixRepresentation {
  public:
   MatrixRepresentation();
-  explicit MatrixRepresentation(bitset<48> bits);
+  explicit MatrixRepresentation(dynamic_bitset<> bits);
   virtual ~MatrixRepresentation();
 
   void InitFromString(const char* input);
@@ -78,7 +80,7 @@ class MatrixRepresentation {
   // matrix. Consequently, an index of
   int operator()(int x, int y);
 
-  static void BitsetFromBytes(const char* input, bitset<48>* bits);
+  static void BitsetFromBytes(const char* input, dynamic_bitset<>* bits);
 
   string ToString();
   void ToInts(vector<int>* output);

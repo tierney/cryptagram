@@ -4,15 +4,17 @@
 #ifndef _AESTHETE_THREAD_H_
 #define _AESTHETE_THREAD_H_
 
-#include <bitset>
 #include <fstream>
 #include <iostream>
 #include <pthread.h>
 
+#include "boost/dynamic_bitset.hpp"
 #include "queue.h"
 #include "types.h"
 
-typedef vector<bitset<48> > MatrixQueueEntry;
+using boost::dynamic_bitset;
+
+typedef vector<dynamic_bitset<> > MatrixQueueEntry;
 
 namespace cryptogram {
 
